@@ -61,6 +61,7 @@ class _FirstScreenState extends State<FirstScreen> {
 
 
 
+
     querySnapshot.docs.forEach((doc) async {
       print(doc.id);
       DocumentSnapshot documentSnapshot = await  parkingProvider.doc(doc.id).get();
