@@ -9,7 +9,3 @@ class GeoLocatorService
   }
 }
 
-class Constraint {
-  static User? user;
-
-}

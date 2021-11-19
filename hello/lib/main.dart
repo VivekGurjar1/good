@@ -28,6 +28,8 @@ class MyApp extends StatelessWidget {
 
 
       initialData: null,
+
+
       child: FutureBuilder(
         future:initializeApp ,
           builder: (context,snapShot){
