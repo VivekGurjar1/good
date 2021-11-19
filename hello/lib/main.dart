@@ -21,6 +21,8 @@ class MyApp extends StatelessWidget {
     return FutureProvider(
       create: (context)=>currentLocation.getLocatioon(),
       initialData: null,
+
+
       child: FutureBuilder(
         future:initializeApp ,
           builder: (context,snapShot){
