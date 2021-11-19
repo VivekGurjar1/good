@@ -1,4 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
+ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hello/firstpage.dart';
 
@@ -13,6 +13,9 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
+
+
   final Future<FirebaseApp> initializeApp=Firebase.initializeApp();
   final currentLocation=GeoLocatorService();
 
@@ -20,6 +23,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureProvider(
       create: (context)=>currentLocation.getLocatioon(),
+
+
       initialData: null,
 
 
