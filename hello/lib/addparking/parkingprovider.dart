@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hello/service.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:hello/crosscheck/crosscheck.dart';
+
 
 
 class ProviderDetails extends StatefulWidget {
@@ -14,13 +16,16 @@ class ProviderDetails extends StatefulWidget {
 }
 
 class _ProviderDetailsState extends State<ProviderDetails> {
+  double lat=0.0;
+  double long=0.0;
 
   String name="";
+  bool checkForLocation=false;
 
   CollectionReference parkingProvider =
   FirebaseFirestore.instance.collection('Parkingprovider');
   CollectionReference parking =
-  FirebaseFirestore.instance.collection('parking');
+    FirebaseFirestore.instance.collection('parking');
   final _auth = FirebaseAuth.instance;
 
   TextEditingController householderController =TextEditingController();
@@ -241,6 +246,24 @@ class _ProviderDetailsState extends State<ProviderDetails> {
                 ),
               ),
 
+              Row(
+                children: [
+                  Checkbox(value: checkForLocation, onChanged: (l){
+                    checkForLocation=l!;
+                    
+                    if(checkForLocation){
+
+                      location();
+                    }
+                    setState(() {
+
+                    });
+                    
+                  }),
+                  Text("location is required for for verifying perfect  \n location and also for show the  location in google map",style: TextStyle(fontSize: 12),)
+                  
+                ],
+              ),
               Container(
                 height: 40,
                 decoration: BoxDecoration(
@@ -249,7 +272,7 @@ class _ProviderDetailsState extends State<ProviderDetails> {
                 margin: EdgeInsets.only(left: 20,top: 7,right: 20,bottom: 7),
                 child: ElevatedButton(
                   onPressed: (){
-                    if(householderController.text==""||availabelSlots.text==""||contactNo.text==""||costPerSlot.text==""||timing.text==""||adharCard.text==""||areaPinCode.text==""||landmark.text=="")
+                    if(householderController.text==""||availabelSlots.text==""||contactNo.text==""||costPerSlot.text==""||timing.text==""||adharCard.text==""||areaPinCode.text==""||landmark.text==""||!checkForLocation)
                     {
 
                       Fluttertoast.showToast(msg: "plz fill required field",backgroundColor: Colors.red,textColor: Colors.white,gravity: ToastGravity.BOTTOM);
@@ -258,12 +281,16 @@ class _ProviderDetailsState extends State<ProviderDetails> {
                     else
                       {
                         addProviderddata();
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>CrossCheck()));
+
                       }
 
                   },
                   child:Text("Submit")
                   ,)
               ),
+
+
 
 
 
@@ -290,6 +317,9 @@ class _ProviderDetailsState extends State<ProviderDetails> {
     providerModel.adharCardNo=adharCard.text;
     providerModel.areaPinCode=areaPinCode.text;
     providerModel.landmark=landmark.text;
+    providerModel.lat=lat.toString();
+    providerModel.long=long.toString();
+
     print("vievk");
 
     try {
@@ -297,7 +327,7 @@ class _ProviderDetailsState extends State<ProviderDetails> {
     } on Exception catch (e) {
       print(e);
     }
-    print(Constraint.user!.uid);
+
 
 
   }
@@ -316,7 +346,20 @@ class _ProviderDetailsState extends State<ProviderDetails> {
 
     });
     
-    
+
+  }
+
+  void location() async{
+
+
+      var geolocator = Geolocator();
+      Position position =await geolocator.getCurrentPosition(desiredAccuracy:LocationAccuracy.high,locationPermissionLevel: GeolocationPermission.location);
+      lat=position.latitude;
+      long=position.longitude;
+
+
+
+
   }
 }
 class ProviderModel {
@@ -328,8 +371,10 @@ class ProviderModel {
   String? adharCardNo;
   String? areaPinCode;
   String? landmark;
+  String? lat;
+  String? long;
 
-  ProviderModel({this.houseHolderName, this.availabeSlots, this.contactNo, this.costPerSlot, this.timing, this.adharCardNo, this.areaPinCode, this.landmark});
+  ProviderModel({this.houseHolderName, this.availabeSlots, this.contactNo, this.costPerSlot, this.timing, this.adharCardNo, this.areaPinCode, this.landmark, this.lat, this.long});
 
   factory ProviderModel.fromMap(map) {
     return ProviderModel(
@@ -340,7 +385,11 @@ class ProviderModel {
         timing: map["timing"],
         adharCardNo: map["adharCardNo"],
         areaPinCode: map["areaPinCode"],
-        landmark: map["landmark"]);
+        landmark: map["landmark"],
+        lat: map["lat"],
+        long: map["long"]
+
+    );
   }
 
   Map<String, dynamic> toMap() {
@@ -354,6 +403,8 @@ class ProviderModel {
       'adharCardNo': adharCardNo,
       'areaPinCode': areaPinCode,
       'landmark': landmark,
+      'lat': lat,
+      'long': long,
 
     };
   }
