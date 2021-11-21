@@ -304,6 +304,28 @@ class _ProviderDetailsState extends State<ProviderDetails> {
   }
 
   void addProviderddata() async{
+
+    Map<String,dynamic> d={
+
+    };List<Map<String,dynamic>> s=[
+      {"var":true,
+        "var1":"0"}
+    ];
+
+
+
+
+
+
+for(int i=1;i<int.parse(availabelSlots.text);i++)
+  {
+    s.add({"var":true,
+      "var1":i.toString()});
+  }
+
+
+
+
     User user=_auth.currentUser!;
 
 
@@ -319,10 +341,15 @@ class _ProviderDetailsState extends State<ProviderDetails> {
     providerModel.landmark=landmark.text;
     providerModel.lat=lat.toString();
     providerModel.long=long.toString();
+    providerModel.slotsName=s;
 
     print("vievk");
 
+
     try {
+
+
+
       await parkingProvider.doc(user.uid).set(providerModel.toMap());
     } on Exception catch (e) {
       print(e);
@@ -373,8 +400,9 @@ class ProviderModel {
   String? landmark;
   String? lat;
   String? long;
+  List<Map<String,dynamic>>? slotsName;
 
-  ProviderModel({this.houseHolderName, this.availabeSlots, this.contactNo, this.costPerSlot, this.timing, this.adharCardNo, this.areaPinCode, this.landmark, this.lat, this.long});
+  ProviderModel({this.houseHolderName, this.availabeSlots, this.contactNo, this.costPerSlot, this.timing, this.adharCardNo, this.areaPinCode, this.landmark, this.lat, this.long,this.slotsName  });
 
   factory ProviderModel.fromMap(map) {
     return ProviderModel(
@@ -387,7 +415,9 @@ class ProviderModel {
         areaPinCode: map["areaPinCode"],
         landmark: map["landmark"],
         lat: map["lat"],
-        long: map["long"]
+        long: map["long"],
+        slotsName:map["slotsName"]
+
 
     );
   }
@@ -405,7 +435,10 @@ class ProviderModel {
       'landmark': landmark,
       'lat': lat,
       'long': long,
+      'slotsName':slotsName,
 
     };
   }
 }
+
+

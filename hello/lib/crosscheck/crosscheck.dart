@@ -151,7 +151,8 @@ width: 10,
     areaPinCode = variable['areaPinCode'];
     landmark = variable['landmark'];
 
-    print("name");
+    print(variable['lat']);
+    print(variable['long']);
 
     setState(() {
 
