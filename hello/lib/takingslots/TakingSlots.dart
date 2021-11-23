@@ -37,11 +37,11 @@ class _TakingSlotsState extends State<TakingSlots> {
       body: slotviewer == null
           ? CircularProgressIndicator()
           : Container(
-              height: 800,
+              height: 600,
               child: Column(
                 children: [
                   Container(
-                    height: 600,
+                    height: 500,
                     child: GridView.builder(
                       padding: EdgeInsets.all(20),
                       itemCount: slotviewer.length,
@@ -104,11 +104,11 @@ class _TakingSlotsState extends State<TakingSlots> {
 
                         await parkingProvider.doc(GeoLocatorService.id).update({"slotsName": s});
 
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>UpiPayment()));
 
 
 
-                        // Navigator.push(context, MaterialPageRoute(builder: (context)=>FinalRouteShow(lat: lat,long: long,)));
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>FinalRouteShow(lat: lat,long: long,)));
 
                       },
                       child: Text("Booking"))

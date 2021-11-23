@@ -126,38 +126,18 @@ void setCustomMarker()async{
                     ),
             ),
 
-            Container(
 
-              margin:EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                
-                border: Border.all(color: Colors.black,width: 1.2),
-                boxShadow: [
-                  BoxShadow(offset:Offset(0,1),blurRadius: 10,
-                  color: Colors.black.withOpacity(0.3))
-                ]
-                    
-                
-              ),
-              child: ListTile(
-                title: Container(
-
-                  child: Text("Looking for Parking  "),
-
-                ),
-                trailing: IconButton(onPressed: (){
-                  setState(() {
-
-                  });
-                }, icon:Image.asset("assets/l.jpg")),
-              ),
-            ),
 
 
 
           ],
-        ));
+        ),
+    bottomNavigationBar: ElevatedButton(onPressed: (){ setState(() {
+
+    });}, child: Text("Get The Parking Locations")
+    ,
+    style: ElevatedButton.styleFrom(primary: Colors.indigoAccent),),
+    );
   }
 
 
