@@ -7,5 +7,6 @@ class GeoLocatorService
     var geolocator = Geolocator();
     return await geolocator.getCurrentPosition(desiredAccuracy:LocationAccuracy.high,locationPermissionLevel: GeolocationPermission.location);
   }
+  static String id="";
 }
 

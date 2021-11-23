@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hello/service.dart';
 
 class TakingSlots extends StatefulWidget {
   final String? id;
@@ -16,6 +17,7 @@ class _TakingSlotsState extends State<TakingSlots> {
 
   @override
   void initState() {
+    GeoLocatorService.id=widget.id??"";
 
     getData();
     super.initState();
@@ -76,14 +78,48 @@ class _TakingSlotsState extends State<TakingSlots> {
           ElevatedButton(onPressed: ()async {
 
             DocumentSnapshot documentSnapshot = await  parkingProvider.doc(widget.id).get();
-            List<dynamic> slot = slotviewer;
 
-             await  parkingProvider.doc(widget.id).update({"slotsName":
-               slotviewer.asMap().toString()
-             });
+            List vars=[];
+            List var1=[];
+            slotviewer.forEach((element) {
+              vars.add(element.availabel);
+            });slotviewer.forEach((element) {
+              var1.add(element.slotName);
+            });
+print(vars.length);
+print(var1.length);
+print(slotviewer.length);
 
-            
-          }, child: Text("Booking"))
+            List yourItemList = [];
+
+            for (int i = 0; i < slotviewer.length; i++)
+              yourItemList.add({
+                "var": vars.toList()[i],
+                "var1":var1.toList()[i]
+
+              });
+            List<Map<String,dynamic>> s=[
+
+            ];
+
+            for(int i=0;i<slotviewer.length;i++)
+            {
+              s.add({"var":slotviewer[i].availabel,
+                "var1":slotviewer[i].slotName});
+            }
+
+
+
+                          await parkingProvider
+                              .doc(GeoLocatorService.id)
+                              .update({
+                           "slotsName":s
+
+                          });
+
+                      },
+
+              child: Text("Booking"))
 
         ],)
         ,
@@ -93,12 +129,12 @@ class _TakingSlotsState extends State<TakingSlots> {
 
   void getData() async{
 
-    DocumentSnapshot documentSnapshot = await  parkingProvider.doc(widget.id).get();
+    DocumentSnapshot documentSnapshot = await  parkingProvider.doc(GeoLocatorService.id).get();
 
     if (documentSnapshot.exists) {
 
 
-      List<dynamic> slot = documentSnapshot['slotsName'];
+      List<dynamic> slot = await documentSnapshot['slotsName'];
 
       slot.forEach((element) {
         Map<String,dynamic> slot1=element;
