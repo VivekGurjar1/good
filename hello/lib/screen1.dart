@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,15 +28,26 @@ class _FirstScreenState extends State<FirstScreen> {
 
   @override
   void initState() {
-    getData();
 
+    getBytesFromAsset('assets/m.png', 120).then((onValue) {
+      mapMarker =BitmapDescriptor.fromBytes(onValue);
+
+    });
     setCustomMarker();
+
+
 
     super.initState();
   }
+  static Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  }
 void setCustomMarker()async{
 
-    // mapMarker= await BitmapDescriptor.fromAssetImage(ImageConfiguration(),'assets/picon.png');
+     // mapMarker= await BitmapDescriptor.fromAssetImage(ImageConfiguration(),'assets/l.jpg');
     setState(() {
 
     });
@@ -71,7 +85,7 @@ void setCustomMarker()async{
 
                    }
                ),
-               icon:BitmapDescriptor.defaultMarker
+               icon:mapMarker
            ),
 
 
@@ -136,7 +150,7 @@ void setCustomMarker()async{
                   setState(() {
 
                   });
-                }, icon:Image.asset("assets/picon.png")),
+                }, icon:Image.asset("assets/l.jpg")),
               ),
             ),
 
@@ -146,10 +160,6 @@ void setCustomMarker()async{
         ));
   }
 
-  void getData() async
 
-  {
-
-  }
 }
 

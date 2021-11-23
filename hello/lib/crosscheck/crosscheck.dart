@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hello/screen1.dart';
 
 class CrossCheck extends StatefulWidget {
   const CrossCheck({Key? key}) : super(key: key);
@@ -128,6 +129,15 @@ width: 10,
                     ),
                   ],
                 ),
+
+
+            Center(
+              child: ElevatedButton(onPressed: ()async {
+                 Navigator.popUntil(context, (route) => false);
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=>FirstScreen()));
+
+              }, child: Text("Goto to User Mode")),
+            )
 
           ],
         ),
