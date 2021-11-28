@@ -116,6 +116,8 @@ class _TakingSlotsState extends State<TakingSlots> {
               ),
             ),
     );
+
+
   }
 
   void getData() async {
